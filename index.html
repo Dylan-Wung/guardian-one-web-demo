@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,7 +46,8 @@
         .timestamp-info { text-align: center; font-size: 0.9em; color: var(--text-color); margin: 0 auto 35px; opacity: 0.8; }
         .ok { color: var(--ok-color); } .warn { color: var(--warn-color); } .fail { color: var(--fail-color); }
         .overview-dashboard { background: var(--card-bg); color: var(--text-color); padding: 25px; border-radius: 10px; margin-bottom: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid var(--border-color-light); transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s; }
-        .overview-dashboard h3 { margin-top: 0; font-size: 1.3em; margin-bottom: 20px; color: var(--text-color); font-weight: 600; text-align: left; }
+        .overview-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .overview-dashboard h3 { margin-top: 0; font-size: 1.3em; margin-bottom: 0; color: var(--text-color); font-weight: 600; text-align: left; }
         .overview-stats { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 25px; }
         .stat-item { flex: 1; min-width: 160px; background-color: var(--bg-color); padding: 20px; border-radius: 8px; font-size: 0.95em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid var(--border-color-light); transition: background-color 0.3s, border-color 0.3s; box-shadow: 0 1px 4px rgba(0,0,0,0.01); }
         .stat-label { color: var(--text-color); font-weight: 500; margin-bottom: 8px; opacity: 0.9; }
@@ -57,6 +57,8 @@
         details.location-details.has-fail > summary { color: var(--fail-color); }
         details.location-details.has-fail > summary svg { stroke: var(--fail-color); }
         details > summary { background: var(--block-level-2-bg); color: var(--text-color); font-size: 1rem; padding: 14px 18px; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: background-color 0.3s, color 0.3s; min-height: 48px; box-sizing: border-box; }
+        /* [RWD Fix] 允許 summary 內的 flex item 換行 */
+        details > summary { flex-wrap: wrap; }
         details.location-details > summary { font-size: 1.2em; padding: 18px 25px; gap: 15px; font-weight: 600; }
         details.location-details > details { margin: 15px 20px 0 35px; }
         details.location-details > details:last-of-type { margin-bottom: 20px; }
@@ -69,7 +71,7 @@
         summary svg:not(.arrow-icon) { min-width: 20px; min-height: 20px; flex-shrink: 0; }
         details.location-details > summary .arrow-icon { width: 22px; height: 22px; }
         details.location-details > summary svg:not(.arrow-icon) { min-width: 24px; min-height: 24px; }
-        .category-title { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1; }
+        .category-title { font-weight: 600; white-space: normal; flex-grow: 1; } /* [RWD Fix] 移除 nowrap, 允許換行 */
         .status-bubbles { display: flex; gap: 8px; align-items: center; flex-shrink: 0; margin-right: 8px; }
         .status-bubble { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; color: #fff; font-size: 1em; font-weight: 600; line-height: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.3); border: 1px solid rgba(0,0,0,0.15); box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .status-bubble:hover { transform: translateY(-1px); box-shadow: 0 3px 6px rgba(0,0,0,0.25); }
@@ -120,17 +122,18 @@
         .theme-switch-icon.sun { display: inline-block; } .theme-switch-icon.moon { display: none; }
         body.dark-mode .theme-switch-icon.sun { display: none; } body.dark-mode .theme-switch-icon.moon { display: inline-block; }
         .control-buttons { display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .control-buttons button { background-color: var(--button-bg); color: var(--text-color); font-weight: bold; border: 1px solid var(--button-border); border-radius: 6px; padding: 10px 18px; cursor: pointer; font-size: 0.95em; transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; white-space: nowrap; flex-shrink: 1; }
-        .control-buttons button:hover { background-color: var(--button-hover-bg); }
+        .control-buttons button, .control-buttons a, .overview-header a { background-color: var(--button-bg); color: var(--text-color); font-weight: bold; border: 1px solid var(--button-border); border-radius: 6px; padding: 10px 18px; cursor: pointer; font-size: 0.95em; transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; white-space: nowrap; flex-shrink: 1; text-decoration: none; }
+        .control-buttons button:hover, .control-buttons a:hover, .overview-header a:hover { background-color: var(--button-hover-bg); }
         body.errors-filtered .location-details:not(.has-fail) { display: none; }
         body.errors-filtered .location-details.has-fail details:not([data-category-status='has-fail']) { display: none; }
         body.errors-filtered .location-details.has-fail details[data-category-status='has-fail'] li:not(.fail) { display: none; }
         @media (max-width: 600px) {
             body { padding: 10px; } .container { margin: 15px auto; padding: 20px 15px; }
             .overview-dashboard { padding: 20px; margin-bottom: 25px; }
+            .overview-header a { padding: 8px 12px; font-size: 0.85em; } /* Adjust button size on small screens */
             .top-controls { flex-direction: row; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 20px; }
             .control-buttons { flex-direction: row; width: auto; justify-content: flex-end; gap: 10px; }
-            .control-buttons button { width: auto; flex-grow: 1; text-align: center; }
+            .control-buttons button, .control-buttons a { width: auto; flex-grow: 1; text-align: center; }
             .overview-stats { flex-wrap: nowrap; gap: 10px; } .stat-item { min-width: 0; padding: 15px 5px; }
             .stat-label { font-size: 0.85em; margin-bottom: 6px; } .stat-value { font-size: 2em; }
             .status-bubble { width: 24px; height: 24px; font-size: 0.85em; }
@@ -160,17 +163,20 @@
                 <button id='toggleAllBtn' onclick="toggleAllSections()">全部展開</button>
             </div>
         </div>
-        
+
         <h2>🌐 網路設備狀態報告</h2>
-        <p class='version-info'>版本號：v4.2.0</p>
-        <p class='timestamp-info'>🕒 更新時間：2025-08-05 22:00:17</p>
+        <p class='version-info'>版本號：v4.3.2</p>
+        <p class='timestamp-info'>🕒 更新時間：2025-08-06 02:41:07</p>
 
         <div class='overview-dashboard'>
-            <h3>設備狀態總覽</h3>
+            <div class='overview-header'>
+                <h3>設備狀態總覽</h3>
+                <a href="#">編輯設定</a>
+            </div>
             <div class='overview-stats'>
-                <div class='stat-item'><span class='stat-label'>總設備數</span><div class='stat-value'>28</div></div>
-                <div class='stat-item'><span class='stat-label ok'>正常設備</span><div class='stat-value ok'>22</div></div>
-                <div class='stat-item'><span class='stat-label fail'>異常設備</span><div class='stat-value fail'>6</div></div>
+                <div class='stat-item'><span class='stat-label'>總設備數</span><div class='stat-value'>33</div></div>
+                <div class='stat-item'><span class='stat-label ok'>正常設備</span><div class='stat-value ok'>23</div></div>
+                <div class='stat-item'><span class='stat-label fail'>異常設備</span><div class='stat-value fail'>10</div></div>
             </div>
         </div>
 
@@ -199,7 +205,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>ASUS AX88U</span>
-                            <span class='device-meta'>(10.10.101.2) &mdash; http:200</span>
+                            <span class='device-meta'>(10.10.101.2) &mdash; HTTP:200</span>
                         </div>
                     </li>
                     
@@ -214,7 +220,7 @@
                         <div class='status-bubble ok'>3</div>
                         
                     </div>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     <span class='category-title'>類別：Firewall</span>
                 </summary>
                 <ul>
@@ -223,7 +229,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>FortiGate 50F to Hinet-1</span>
-                            <span class='device-meta'>(172.16.150.1) &mdash; https:200</span>
+                            <span class='device-meta'>(172.16.150.1) &mdash; HTTPS:200</span>
                         </div>
                     </li>
                     
@@ -231,7 +237,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>FortiGate 50F to Hinet-2</span>
-                            <span class='device-meta'>(172.16.200.1) &mdash; https:200</span>
+                            <span class='device-meta'>(172.16.200.1) &mdash; HTTPS:200</span>
                         </div>
                     </li>
                     
@@ -239,7 +245,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>FortiGate 60F</span>
-                            <span class='device-meta'>(10.10.100.1) &mdash; https:200</span>
+                            <span class='device-meta'>(10.10.100.1) &mdash; HTTPS:200</span>
                         </div>
                     </li>
                     
@@ -263,7 +269,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>TP-Link TL-SG2008D-01</span>
-                            <span class='device-meta'>(10.10.101.39) &mdash; http:200</span>
+                            <span class='device-meta'>(10.10.101.39) &mdash; HTTP:200</span>
                         </div>
                     </li>
                     
@@ -312,7 +318,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>25-2F小孩房間-ASUS AC66U B1</span>
-                            <span class='device-meta'>(10.10.101.8) &mdash; http:200</span>
+                            <span class='device-meta'>(10.10.101.8) &mdash; HTTP:200</span>
                         </div>
                     </li>
                     
@@ -401,7 +407,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>TP-Link TL-SG108E 25-3F</span>
-                            <span class='device-meta'>(10.10.101.34) &mdash; http:401</span>
+                            <span class='device-meta'>(10.10.101.34) &mdash; HTTP:401</span>
                         </div>
                     </li>
                     
@@ -434,7 +440,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>UniFi-UDR</span>
-                            <span class='device-meta'>(10.10.100.4) &mdash; https:200</span>
+                            <span class='device-meta'>(10.10.100.4) &mdash; HTTPS:200</span>
                         </div>
                     </li>
                     
@@ -442,7 +448,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>Xiaomi-AX3000T-1(27號三樓主臥)</span>
-                            <span class='device-meta'>(10.10.101.15) &mdash; https:200</span>
+                            <span class='device-meta'>(10.10.101.15) &mdash; HTTPS:200</span>
                         </div>
                     </li>
                     
@@ -474,7 +480,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>HP 1810-8G 27-3F</span>
-                            <span class='device-meta'>(10.10.101.38) &mdash; http:200</span>
+                            <span class='device-meta'>(10.10.101.38) &mdash; HTTP:200</span>
                         </div>
                     </li>
                     
@@ -482,7 +488,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>TP-Link TL-SG108E 27-3F</span>
-                            <span class='device-meta'>(10.10.101.36) &mdash; http:200</span>
+                            <span class='device-meta'>(10.10.101.36) &mdash; HTTP:200</span>
                         </div>
                     </li>
                     
@@ -490,7 +496,80 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>TP-Link TL-SG2008D-02 27-3F</span>
-                            <span class='device-meta'>(10.10.101.40) &mdash; http:200</span>
+                            <span class='device-meta'>(10.10.101.40) &mdash; HTTP:200</span>
+                        </div>
+                    </li>
+                    
+                </ul>
+            </details>
+            
+        </details>
+        
+        <details class='location-details has-fail' open>
+            <summary class='summary-with-arrow'>
+                <span class='arrow-icon collapsed-arrow'><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                <span class='arrow-icon expanded-arrow'><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fail"><path d="M12 22s-8-4-8-10a8 8 0 0 1 16 0c0 6-8 10-8 10z"/><circle cx="12" cy="10" r="3"/><line x1="12" y1="12" x2="12" y2="12.01"/><line x1="12" y1="16" x2="12" y2="16.01"/></svg> 地點：555
+            </summary>
+            
+            <details data-category-status='has-fail' open>
+                <summary class='summary-with-arrow'>
+                    <span class='arrow-icon collapsed-arrow'><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                    <span class='arrow-icon expanded-arrow'><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                    <div class='status-bubbles'>
+                        
+                        <div class='status-bubble fail'>2</div>
+                    </div>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    <span class='category-title'>類別：測試機</span>
+                </summary>
+                <ul>
+                    
+                    <li class='fail'>
+                        <span class='status-dot fail'></span>
+                        <div class='device-info-block'>
+                            <span class='device-name'>OA</span>
+                            <span class='device-meta'>(2.2.2.1) &mdash; Ping Failed (3 retries)</span>
+                        </div>
+                    </li>
+                    
+                    <li class='fail'>
+                        <span class='status-dot fail'></span>
+                        <div class='device-info-block'>
+                            <span class='device-name'>OA</span>
+                            <span class='device-meta'>(2.2.2.2) &mdash; Ping Failed (3 retries)</span>
+                        </div>
+                    </li>
+                    
+                </ul>
+            </details>
+            
+            <details data-category-status='has-fail' open>
+                <summary class='summary-with-arrow'>
+                    <span class='arrow-icon collapsed-arrow'><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                    <span class='arrow-icon expanded-arrow'><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                    <div class='status-bubbles'>
+                        
+                        <div class='status-bubble fail'>2</div>
+                    </div>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    <span class='category-title'>類別：無人機</span>
+                </summary>
+                <ul>
+                    
+                    <li class='fail'>
+                        <span class='status-dot fail'></span>
+                        <div class='device-info-block'>
+                            <span class='device-name'>OA</span>
+                            <span class='device-meta'>(2.2.2.3) &mdash; Ping Failed (3 retries)</span>
+                        </div>
+                    </li>
+                    
+                    <li class='fail'>
+                        <span class='status-dot fail'></span>
+                        <div class='device-info-block'>
+                            <span class='device-name'>OA</span>
+                            <span class='device-meta'>(2.2.2.4) &mdash; Ping Failed (3 retries)</span>
                         </div>
                     </li>
                     
@@ -523,7 +602,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>25-1F-ASUS RT-AC68U</span>
-                            <span class='device-meta'>(10.10.101.3) &mdash; http:200</span>
+                            <span class='device-meta'>(10.10.101.3) &mdash; HTTP:200</span>
                         </div>
                     </li>
                     
@@ -531,7 +610,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>25-1F客廳-ASUS AC68U</span>
-                            <span class='device-meta'>(10.10.101.11) &mdash; http:200</span>
+                            <span class='device-meta'>(10.10.101.11) &mdash; HTTP:200</span>
                         </div>
                     </li>
                     
@@ -539,7 +618,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>25-1F阿姨-ASUS AC66U B1</span>
-                            <span class='device-meta'>(10.10.101.7) &mdash; http:200</span>
+                            <span class='device-meta'>(10.10.101.7) &mdash; HTTP:200</span>
                         </div>
                     </li>
                     
@@ -563,7 +642,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>TP-Link TL-SG2008D-03 25-1F</span>
-                            <span class='device-meta'>(10.10.101.41) &mdash; http:200</span>
+                            <span class='device-meta'>(10.10.101.41) &mdash; HTTP:200</span>
                         </div>
                     </li>
                     
@@ -596,7 +675,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>Xiaomi-AX3000T-1(新舜房間)</span>
-                            <span class='device-meta'>(10.10.101.17) &mdash; https:200</span>
+                            <span class='device-meta'>(10.10.101.17) &mdash; HTTPS:200</span>
                         </div>
                     </li>
                     
@@ -604,7 +683,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>Xiaomi-AX3000T-1(餐廳)</span>
-                            <span class='device-meta'>(10.10.101.16) &mdash; https:200</span>
+                            <span class='device-meta'>(10.10.101.16) &mdash; HTTPS:200</span>
                         </div>
                     </li>
                     
@@ -637,7 +716,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>27-2F-ASUS RT-AC68U</span>
-                            <span class='device-meta'>(10.10.101.6) &mdash; http:200</span>
+                            <span class='device-meta'>(10.10.101.6) &mdash; HTTP:200</span>
                         </div>
                     </li>
                     
@@ -661,7 +740,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>TP-Link TL-SG108E 27-2F</span>
-                            <span class='device-meta'>(10.10.101.35) &mdash; http:200</span>
+                            <span class='device-meta'>(10.10.101.35) &mdash; HTTP:200</span>
                         </div>
                     </li>
                     
@@ -694,7 +773,7 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>27-4F-ASUS RT-AC68U</span>
-                            <span class='device-meta'>(10.10.101.4) &mdash; http:200</span>
+                            <span class='device-meta'>(10.10.101.4) &mdash; HTTP:200</span>
                         </div>
                     </li>
                     
@@ -718,7 +797,40 @@
                         <span class='status-dot ok'></span>
                         <div class='device-info-block'>
                             <span class='device-name'>TP-Link TL-SG108E 27-4F</span>
-                            <span class='device-meta'>(10.10.101.31) &mdash; http:401</span>
+                            <span class='device-meta'>(10.10.101.31) &mdash; HTTP:401</span>
+                        </div>
+                    </li>
+                    
+                </ul>
+            </details>
+            
+        </details>
+        
+        <details class='location-details ' >
+            <summary class='summary-with-arrow'>
+                <span class='arrow-icon collapsed-arrow'><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                <span class='arrow-icon expanded-arrow'><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ok"><path d="M12 22s-8-4-8-10a8 8 0 0 1 16 0c0 6-8 10-8 10z"/><circle cx="12" cy="10" r="3"/></svg> 地點：HW-12
+            </summary>
+            
+            <details data-category-status='' >
+                <summary class='summary-with-arrow'>
+                    <span class='arrow-icon collapsed-arrow'><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                    <span class='arrow-icon expanded-arrow'><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                    <div class='status-bubbles'>
+                        <div class='status-bubble ok'>1</div>
+                        
+                    </div>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    <span class='category-title'>類別：拉機</span>
+                </summary>
+                <ul>
+                    
+                    <li class='ok'>
+                        <span class='status-dot ok'></span>
+                        <div class='device-info-block'>
+                            <span class='device-name'>G1拉麵店老闆說下班的日子真的不錯歐👍👌😌👌👍？！</span>
+                            <span class='device-meta'>(10.10.100.13) &mdash; HTTP:200</span>
                         </div>
                     </li>
                     
@@ -741,13 +853,13 @@
             </summary>
             <div class='system-status-content'>
                 <div class='resource-item detailed' data-resource="cpu">
-                    <div class='resource-label-row'><span class='resource-label'>CPU 使用率:</span><span class='resource-value-text ok'>2.2% (OK)</span></div>
-                    <div class='progress-container'><div class='progress-bar ok' style='width: 2.2%;'><span>2.2%</span></div></div>
+                    <div class='resource-label-row'><span class='resource-label'>CPU 使用率:</span><span class='resource-value-text ok'>1.0% (OK)</span></div>
+                    <div class='progress-container'><div class='progress-bar ok' style='width: 1.0%;'><span>1.0%</span></div></div>
                     <span class='threshold-info'>(閾值: 警告 > 70%, 錯誤 > 90%)</span>
                 </div>
                 <div class='resource-item detailed' data-resource="mem">
-                    <div class='resource-label-row'><span class='resource-label'>記憶體使用率:</span><span class='resource-value-text ok'>30.5% (OK)</span></div>
-                    <div class='progress-container'><div class='progress-bar ok' style='width: 30.5%;'><span>30.5%</span></div></div>
+                    <div class='resource-label-row'><span class='resource-label'>記憶體使用率:</span><span class='resource-value-text ok'>28.4% (OK)</span></div>
+                    <div class='progress-container'><div class='progress-bar ok' style='width: 28.4%;'><span>28.4%</span></div></div>
                     <span class='threshold-info'>(閾值: 警告 > 70%, 錯誤 > 90%)</span>
                 </div>
                 <div class='resource-item detailed' data-resource="disk">
@@ -756,7 +868,7 @@
                     <span class='threshold-info'>(閾值: 警告 > 80%, 錯誤 > 90%)</span>
                 </div>
                 <div class='resource-item detailed' data-resource="load">
-                    <div class='resource-label-row'><span class='resource-label'>平均負載 (5分鐘):</span><span class='resource-value-text'>0.15</span></div>
+                    <div class='resource-label-row'><span class='resource-label'>平均負載 (5分鐘):</span><span class='resource-value-text'>0.07</span></div>
                     <div class='progress-container'></div>
                 </div>
             </div>
